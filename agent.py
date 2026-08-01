@@ -1,11 +1,13 @@
+import os
 from google import genai
 from google.genai import types
 from schemas import AgentResponse
 
 class RepairAgent:
-    def __init__(self, api_key: str):
-        self.client = genai.Client(api_key=api_key)
-        # Update model to gemini-2.5-flash
+    def __init__(self, api_key: str = None):
+        key = api_key or os.getenv("GEMINI_API_KEY")
+        self.client = genai.Client(api_key=key)
+        # Standard model string for the v1/v1beta API:
         self.model = "gemini-2.5-flash"
 
     def generate_patch(self, error_log: str, ast_context: str) -> AgentResponse:

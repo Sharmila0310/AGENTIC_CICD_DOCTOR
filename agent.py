@@ -5,7 +5,7 @@ from schemas import AgentResponse
 class RepairAgent:
     def __init__(self, api_key: str):
         self.client = genai.Client(api_key=api_key)
-        self.model = "gemini-3.6-flash"
+        self.model = "gemini-2.5-flash"  # Verified model string for Google GenAI SDK
 
     def generate_patch(self, error_log: str, ast_context: str) -> AgentResponse:
         prompt = f"""
@@ -19,12 +19,11 @@ class RepairAgent:
         {ast_context}
         """
         
-        # Enforce structured Pydantic output from Gemini
         response = self.client.models.generate_content(
             model=self.model,
             contents=prompt,
             config=types.GenerateContentConfig(
-                temperature=0.1, # Low temperature for deterministic code generation
+                temperature=0.1,
                 response_mime_type="application/json",
                 response_schema=AgentResponse,
             )

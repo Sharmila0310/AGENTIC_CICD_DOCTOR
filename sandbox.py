@@ -28,10 +28,10 @@ class SandboxEngine:
         try:
             container = self.client.containers.run(
                 image=self.image_name,
-                command="pytest --tb=short", # No pip install needed here anymore!
+                command="pytest --tb=short",
                 volumes={host_workspace_path: {'bind': '/workspace', 'mode': 'rw'}},
                 working_dir="/workspace",
-                network_mode="none",         # Network remains completely disabled for safety
+                network_mode="none",
                 mem_limit="512m",
                 nano_cpus=1000000000,
                 detach=True

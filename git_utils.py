@@ -24,10 +24,6 @@ def create_github_pr(repo_name: str, file_path: str, fixed_code: str, commit_mes
         # 3. Check if file exists on main branch first to avoid 404
         try:
             contents = repo.get_contents(file_path, ref=default_branch)
-<<<<<<< Updated upstream
-            # Update existing file on the new branch
-=======
->>>>>>> Stashed changes
             repo.update_file(
                 path=file_path,
                 message=commit_message,
@@ -37,10 +33,6 @@ def create_github_pr(repo_name: str, file_path: str, fixed_code: str, commit_mes
             )
             print(f"[Git] Updated existing file: {file_path}")
         except GithubException:
-<<<<<<< Updated upstream
-            # File doesn't exist yet on GitHub, create it anew
-=======
->>>>>>> Stashed changes
             repo.create_file(
                 path=file_path,
                 message=commit_message,

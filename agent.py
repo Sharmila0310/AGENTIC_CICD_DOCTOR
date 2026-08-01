@@ -5,7 +5,8 @@ from schemas import AgentResponse
 class RepairAgent:
     def __init__(self, api_key: str):
         self.client = genai.Client(api_key=api_key)
-        self.model = "gemini-2.5-flash"  # Verified model string for Google GenAI SDK
+        # Update model to gemini-2.5-flash
+        self.model = "gemini-2.5-flash"
 
     def generate_patch(self, error_log: str, ast_context: str) -> AgentResponse:
         prompt = f"""

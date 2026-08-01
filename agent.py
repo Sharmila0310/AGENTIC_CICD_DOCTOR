@@ -4,17 +4,17 @@ from google import genai
 from google.genai import types
 from schemas import AgentResponse
 
-# Load environment variables from .env file
+# Load API key from .env automatically
 load_dotenv()
 
 class RepairAgent:
     def __init__(self, api_key: str = None):
         key = api_key or os.getenv("GEMINI_API_KEY")
         if not key:
-            raise ValueError("GEMINI_API_KEY is missing! Check your .env file.")
+            raise ValueError("GEMINI_API_KEY is missing! Make sure it's set in your .env file.")
             
         self.client = genai.Client(api_key=key)
-        # Standard model string for the Gemini API:
+        # Using gemini-2.5-flash (valid model string for Google GenAI SDK)
         self.model = "gemini-2.5-flash"
 
     def generate_patch(self, error_log: str, ast_context: str) -> AgentResponse:

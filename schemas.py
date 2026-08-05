@@ -1,10 +1,11 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+from typing import List
 
-class PatchTarget(BaseModel):
-    file_path: str = Field(description="Relative path to the broken file in the repo.")
-    original_code_block: str = Field(description="Exact snippet of the broken code to be replaced.")
-    replacement_code_block: str = Field(description="The new, fixed code snippet.")
-    explanation: str = Field(description="Brief technical reasoning for this fix.")
+class FileChange(BaseModel):
+    file_path: str
+    original_code: str
+    replacement_code: str
 
 class AgentResponse(BaseModel):
-    patches: list[PatchTarget] = Field(description="A list of code patches required to fix the build.")
+    thought_process: str
+    file_changes: List[FileChange]

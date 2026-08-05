@@ -7,7 +7,8 @@ class DockerSandbox:
 
     def run_pytest(self, repo_path: str = ".") -> dict:
         abs_path = os.path.abspath(repo_path)
-        cmd = "sh -c 'pip install --no-cache-dir pytest >/dev/null 2>&1; pytest'"
+        # Force pip install pytest FIRST inside the container
+        cmd = "sh -c 'pip install --no-cache-dir pytest >/dev/null 2>&1 && pytest'"
         try:
             container = self.client.containers.run(
                 self.image, cmd, volumes={abs_path: {"bind": "/app", "mode": "rw"}},

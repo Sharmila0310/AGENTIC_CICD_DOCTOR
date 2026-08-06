@@ -4,7 +4,7 @@ from agent import RepairAgent
 from ast_parser import extract_failing_context
 from patcher import apply_file_changes
 from sandbox import DockerSandbox
-from github_service import GitHubService  # <-- Add this import
+from github_service import GitHubPRService
 
 app = FastAPI()
 

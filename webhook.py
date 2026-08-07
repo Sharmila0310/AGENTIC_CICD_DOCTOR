@@ -42,14 +42,22 @@ def repair_task(repo_path: str = "."):
 @app.post("/webhook/github")
 async def handle_webhook(req: Request, bg: BackgroundTasks):
     data = await req.json()
-    
-    # Debug print event details
     event = req.headers.get("X-GitHub-Event")
-    print(f"📩 Webhook event: {event}, action: {data.get('action')}")
+    action = data.get("action")
+    conclusion = data.get("workflow_run", {}).get("conclusion")
+    
+    print(f"📩 Event: {event} | Action: {action} | Conclusion: {conclusion}")
 
-    # Trigger on workflow failure OR direct push
-    if data.get("action") == "completed" and data.get("workflow_run", {}).get("conclusion") == "failure":
+    # Condition 1: Workflow finished and failed
+    is_failed_workflow = (event == "workflow_run" and action == "completed" and conclusion == "failure")
+    
+    # Condition 2: Direct push event
+    is_push_event = (event == "push")
+
+    if is_failed_workflow or is_push_event:
+        print("🚀 Condition met! Starting AI repair task...")
         bg.add_task(repair_task)
         return {"status": "repair_started"}
         
+    print("⏭️ Event ignored.")
     return {"status": "ignored"}

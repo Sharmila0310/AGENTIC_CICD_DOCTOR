@@ -23,11 +23,8 @@ def repair_task(repo_path: str = "."):
     apply_file_changes(patch.file_changes)
     print("🛠️ Applied fix locally.")
 
-    # -------------------------------------------------------------
-    # 🚀 STEP ADDED: Create branch, push fix, and open PR on GitHub!
-    # -------------------------------------------------------------
     try:
-        gh = GitHubService()
+        gh = GitHubPRService()
         pr_url = gh.create_pull_request(
             branch_name="fix/ci-doctor-auto-repair",
             commit_message="🤖 [CI Doctor] Auto-fix failing tests",
@@ -48,10 +45,7 @@ async def handle_webhook(req: Request, bg: BackgroundTasks):
     
     print(f"📩 Event: {event} | Action: {action} | Conclusion: {conclusion}")
 
-    # Condition 1: Workflow finished and failed
     is_failed_workflow = (event == "workflow_run" and action == "completed" and conclusion == "failure")
-    
-    # Condition 2: Direct push event
     is_push_event = (event == "push")
 
     if is_failed_workflow or is_push_event:

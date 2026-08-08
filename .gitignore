@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.env
+mock_workspace/
+*.log
